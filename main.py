@@ -6,8 +6,9 @@ from time import sleep, time
 from faster_whisper import download_model, WhisperModel
 from DiscordWrapper import DiscordWrapper
 
-MODEL_SIZE = "medium"
+MODEL_SIZE = "large-v2"
 COMPUTE_TYPE = "int8"
+BEAM_SIZE = 0
 AUDIO_DIR = "audio"
 FFMPEG_LOCATION_WINDOWS = "C:\\ffmpeg\\bin\\ffmpeg"
 SEGMENT_TIME_SECONDS = 30
@@ -80,7 +81,7 @@ if __name__ == '__main__':
                 start_time = time()
                 discord_message = ""
                 segments, info = model.transcribe(audio_file, language="ja", task="translate",
-                                                  beam_size=1,
+                                                  beam_size=BEAM_SIZE,
                                                   vad_filter=True, vad_parameters=dict(min_silence_duration_ms=2000))
 
                 for segment in segments:
