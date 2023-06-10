@@ -80,7 +80,8 @@ if __name__ == '__main__':
                 start_time = time()
                 discord_message = ""
                 segments, info = model.transcribe(audio_file, language="ja", task="translate",
-                                                  beam_size=1, vad_filter=False)
+                                                  beam_size=1,
+                                                  vad_filter=True, vad_parameters=dict(min_silence_duration_ms=2000))
 
                 for segment in segments:
                     text = segment.text.strip()
