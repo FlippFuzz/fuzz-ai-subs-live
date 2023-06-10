@@ -8,7 +8,7 @@ from DiscordWrapper import DiscordWrapper
 
 MODEL_SIZE = "large-v2"
 COMPUTE_TYPE = "int8"
-BEAM_SIZE = 5
+BEAM_SIZE = 1
 TEMPERATURE = 0
 AUDIO_DIR = "audio"
 FFMPEG_LOCATION_WINDOWS = "C:\\ffmpeg\\bin\\ffmpeg"
