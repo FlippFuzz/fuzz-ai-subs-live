@@ -34,7 +34,7 @@ if __name__ == '__main__':
             current_translation_m3u8 = discord.video_m3u8
 
             # Delete all temp files
-            files = glob.glob(f"{AUDIO_DIR}\\*.aac")
+            files = glob.glob(os.path.join(AUDIO_DIR, "*.aac"))
             for file in files:
                 os.remove(file)
 
@@ -50,7 +50,7 @@ if __name__ == '__main__':
                                                "-i", current_translation_m3u8,
                                                "-f", "segment", "-segment_time", f"{SEGMENT_TIME_SECONDS}",
                                                "-c:a", "copy",
-                                               f"{AUDIO_DIR}\\live%06d.aac"])
+                                               os.path.join(AUDIO_DIR, "live%06d.aac")])
 
             print("Waiting for first segment")
             sleep(SEGMENT_TIME_SECONDS)
@@ -59,7 +59,7 @@ if __name__ == '__main__':
             # This condition check handles users changing the translation URL
             while current_translation_m3u8 == discord.video_m3u8:
                 # Look for 2nd latest file - The latest file is still in progress.
-                files = glob.glob(f"{AUDIO_DIR}\\*.aac")
+                files = glob.glob(os.path.join(AUDIO_DIR, "*.aac"))
                 files.sort(key=os.path.getctime)
 
                 if len(files) < 2 or files[-2] == prev_file:

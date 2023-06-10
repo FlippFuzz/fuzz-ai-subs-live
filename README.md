@@ -19,6 +19,7 @@ git clone https://github.com/FlippFuzz/fuzz-ai-subs-live.git
 cd fuzz-ai-subs-live
 python3 -m venv venv
 . venv/bin/activate
-pip3 install -r requirements
+pip3 install -r requirements.txt
+# Popluate credentials.py
 python3 main.py
 ```
