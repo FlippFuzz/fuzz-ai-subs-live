@@ -2,7 +2,7 @@ import glob
 import os
 import subprocess
 import traceback
-from time import sleep
+from time import sleep, time
 from faster_whisper import download_model, WhisperModel
 from DiscordWrapper import DiscordWrapper
 
@@ -77,16 +77,18 @@ if __name__ == '__main__':
                     i += 1
 
                 # Translate current file
+                start_time = time()
+                discord_message = ""
                 segments, info = model.transcribe(audio_file, language="ja", task="translate",
                                                   beam_size=1, vad_filter=False)
 
-                discord_message = f"{audio_file}\n"
                 for segment in segments:
                     text = segment.text.strip()
                     print(text)
                     discord_message += text + "\n"
 
-                discord.send_message(discord_message)
+                end_time = time()
+                discord.send_message(f"{audio_file} - {end_time - start_time}\n{discord_message}")
 
             ffmpeg_process.terminate()
             ffmpeg_process.wait()
