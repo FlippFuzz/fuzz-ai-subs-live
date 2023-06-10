@@ -60,7 +60,7 @@ if __name__ == '__main__':
             while current_translation_m3u8 == discord.video_m3u8:
                 # Look for 2nd latest file - The latest file is still in progress.
                 files = glob.glob(os.path.join(AUDIO_DIR, "*.aac"))
-                files.sort(key=os.path.getctime)
+                files.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
 
                 if len(files) < 2 or files[-2] == prev_file:
                     print(f"New {SEGMENT_TIME_SECONDS}s segment not ready yet")
