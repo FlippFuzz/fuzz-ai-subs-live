@@ -1,0 +1,6 @@
+credentials.py
+
+__pycache__
+.idea
+venv/
+audio/*.aac
