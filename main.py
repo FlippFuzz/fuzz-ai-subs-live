@@ -89,7 +89,9 @@ if __name__ == '__main__':
                     discord_message += text + "\n"
 
                 end_time = time()
-                discord.send_message(f"{audio_file} - {end_time - start_time}\n{discord_message}")
+                discord.send_message(f"{audio_file} - Behind by: "
+                                     f"{round(SEGMENT_TIME_SECONDS + end_time - start_time, 3)}\n"
+                                     f"{discord_message}")
 
             ffmpeg_process.terminate()
             ffmpeg_process.wait()
