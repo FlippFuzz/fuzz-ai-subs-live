@@ -89,7 +89,7 @@ if __name__ == '__main__':
                     discord_message += text + "\n"
 
                 end_time = time()
-                discord.send_message(f"{audio_file} - Behind by: "
+                discord.send_message(f"{audio_file} - TL Delay: "
                                      f"{round(SEGMENT_TIME_SECONDS + end_time - start_time, 3)}\n"
                                      f"{discord_message}")
 
