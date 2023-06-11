@@ -10,7 +10,7 @@ class Settings:
 
     segment_time_seconds: int = 10
 
-    model_size: str = "base"  # Valid model sizes are: tiny, base, medium, large-v1, large-v2
+    model_size: str = "medium"  # Valid model sizes are: tiny, base, medium, large-v1, large-v2
     compute_type: str = "int8"
     vad_enabled: bool = True
     beam_size: int = 1
