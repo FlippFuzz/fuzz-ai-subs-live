@@ -46,8 +46,8 @@ if __name__ == '__main__':
                                                "-probesize", "32",
                                                "-i", current_translation_m3u8,
                                                "-f", "segment", "-segment_time", f"{SEGMENT_TIME_SECONDS}",
-                                               "-c:a", "copy",
-                                               os.path.join(AUDIO_DIR, "live%06d.aac")])
+                                               "-c:a", "pcm_s16le", "-ar", "16000", "-ac", "1",
+                                               os.path.join(AUDIO_DIR, "%06d.wav")])
 
             print("Waiting for first segment")
             sleep(SEGMENT_TIME_SECONDS)
@@ -56,7 +56,7 @@ if __name__ == '__main__':
             # This condition check handles users changing the translation URL
             while current_translation_m3u8 == discord.video_m3u8:
                 # Look for 2nd latest file - The latest file is still in progress.
-                files = glob.glob(os.path.join(AUDIO_DIR, "*.aac"))
+                files = glob.glob(os.path.join(AUDIO_DIR, "*.wav"))
                 files.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
 
                 if len(files) < 2 or files[-2] == prev_file:
