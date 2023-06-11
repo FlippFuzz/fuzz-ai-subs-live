@@ -54,7 +54,6 @@ if __name__ == '__main__':
             sleep(SEGMENT_TIME_SECONDS)
 
             prev_file = ""
-            prefix = None
             # This condition check handles users changing the translation URL
             while current_translation_m3u8 == discord.video_m3u8:
                 # Look for 2nd latest file - The latest file is still in progress.
@@ -81,15 +80,7 @@ if __name__ == '__main__':
 
                 # Translate current file
                 start_time = time()
-                lines = translator.translate(audio_file, prefix)
-
-                if len(lines) > 0:
-                    if lines[-1] == prefix:
-                        prefix = None  # Try to prevent feedback loops caused by repeating prefix
-                    else:
-                        prefix = lines[-1]
-                else:
-                    prefix = None
+                lines = translator.translate(audio_file)
 
                 discord_message = ""
                 for line in lines:

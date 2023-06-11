@@ -1,7 +1,4 @@
-from typing import Union
-
 from faster_whisper import download_model, WhisperModel
-
 from Translator import Translator
 
 
