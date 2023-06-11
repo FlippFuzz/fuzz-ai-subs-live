@@ -5,11 +5,8 @@ import traceback
 from time import sleep, time
 from faster_whisper import download_model, WhisperModel
 from DiscordWrapper import DiscordWrapper
+from FasterWhisperTranslator import FasterWhisperTranslator
 
-MODEL_SIZE = "large-v2"
-COMPUTE_TYPE = "int8"
-BEAM_SIZE = 1
-TEMPERATURE = 0
 AUDIO_DIR = "audio"
 FFMPEG_LOCATION_WINDOWS = "C:\\ffmpeg\\bin\\ffmpeg"
 SEGMENT_TIME_SECONDS = 30
@@ -20,9 +17,7 @@ if __name__ == '__main__':
     discord = DiscordWrapper()
 
     # Setup whisper model
-    print("Setting Up Whisper")
-    model_dir = download_model(MODEL_SIZE)
-    model = WhisperModel(model_dir, compute_type=COMPUTE_TYPE)
+    translator = FasterWhisperTranslator()
 
     try:
         current_translation_m3u8 = ""
@@ -80,15 +75,7 @@ if __name__ == '__main__':
 
                 # Translate current file
                 start_time = time()
-                discord_message = ""
-                segments, info = model.transcribe(audio_file, language="ja", task="translate",
-                                                  beam_size=BEAM_SIZE, temperature=TEMPERATURE,
-                                                  vad_filter=True, vad_parameters=dict(min_silence_duration_ms=2000))
-
-                for segment in segments:
-                    text = segment.text.strip()
-                    print(text)
-                    discord_message += text + "\n"
+                discord_message = translator.translate(audio_file)
 
                 end_time = time()
                 discord.send_message(f"{audio_file} - TL Delay: "
