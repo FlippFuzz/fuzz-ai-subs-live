@@ -9,7 +9,7 @@ from FasterWhisperTranslator import FasterWhisperTranslator
 
 AUDIO_DIR = "audio"
 FFMPEG_LOCATION_WINDOWS = "C:\\ffmpeg\\bin\\ffmpeg"
-SEGMENT_TIME_SECONDS = 30
+SEGMENT_TIME_SECONDS = 10
 
 if __name__ == '__main__':
     # Setup discord
@@ -54,6 +54,7 @@ if __name__ == '__main__':
             sleep(SEGMENT_TIME_SECONDS)
 
             prev_file = ""
+            prefix = None
             # This condition check handles users changing the translation URL
             while current_translation_m3u8 == discord.video_m3u8:
                 # Look for 2nd latest file - The latest file is still in progress.
@@ -80,7 +81,16 @@ if __name__ == '__main__':
 
                 # Translate current file
                 start_time = time()
-                discord_message = translator.translate(audio_file)
+                lines = translator.translate(audio_file, prefix)
+
+                if len(lines) > 0:
+                    prefix = lines[-1]
+                else:
+                    prefix = None
+
+                discord_message = ""
+                for line in lines:
+                    discord_message += line + "\n"
 
                 end_time = time()
                 discord.send_message(f"{audio_file} - TL Delay: "
