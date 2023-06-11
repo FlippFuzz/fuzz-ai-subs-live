@@ -5,7 +5,7 @@ import traceback
 from time import sleep, time
 from DiscordWrapper import DiscordWrapper
 from FasterWhisperTranslator import FasterWhisperTranslator
-from WhisperCppTranslator import WhisperCppTranslator
+# from WhisperCppTranslator import WhisperCppTranslator
 
 AUDIO_DIR = "audio"
 FFMPEG_LOCATION_WINDOWS = "C:\\ffmpeg\\bin\\ffmpeg"
