@@ -32,7 +32,7 @@ if __name__ == '__main__':
             current_translation_m3u8 = discord.video_m3u8
 
             # Delete all temp files
-            files = glob.glob(os.path.join(AUDIO_DIR, "*.aac"))
+            files = glob.glob(os.path.join(AUDIO_DIR, "*.wav"))
             for file in files:
                 os.remove(file)
 
