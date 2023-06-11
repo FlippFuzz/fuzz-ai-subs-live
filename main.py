@@ -3,9 +3,9 @@ import os
 import subprocess
 import traceback
 from time import sleep, time
-from faster_whisper import download_model, WhisperModel
 from DiscordWrapper import DiscordWrapper
 from FasterWhisperTranslator import FasterWhisperTranslator
+from WhisperCppTranslator import WhisperCppTranslator
 
 AUDIO_DIR = "audio"
 FFMPEG_LOCATION_WINDOWS = "C:\\ffmpeg\\bin\\ffmpeg"
@@ -17,7 +17,8 @@ if __name__ == '__main__':
     discord = DiscordWrapper()
 
     # Setup whisper model
-    translator = FasterWhisperTranslator()
+    #translator = FasterWhisperTranslator()
+    translator = WhisperCppTranslator()
 
     try:
         current_translation_m3u8 = ""

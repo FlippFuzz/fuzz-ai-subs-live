@@ -23,3 +23,9 @@ pip3 install -r requirements.txt
 # Popluate credentials.py
 python3 main.py
 ```
+
+Note: On Windows, you MIGHT (unsure) need to install gpp/cpp to build the binary for pywhispercpp.
+1. Download and extract mingw64 from https://github.com/niXman/mingw-builds-binaries/releases
+I used `x86_64-13.1.0-release-win32-seh-msvcrt-rt_v11-rev1.7z`
+2. Add gcc/gpp in mingw64 to PATH
+ Example: `C:\mingw64\bin`
