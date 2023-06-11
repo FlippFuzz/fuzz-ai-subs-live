@@ -84,7 +84,10 @@ if __name__ == '__main__':
                 lines = translator.translate(audio_file, prefix)
 
                 if len(lines) > 0:
-                    prefix = lines[-1]
+                    if lines[-1] == prefix:
+                        prefix = None  # Try to prevent feedback loops caused by repeating prefix
+                    else:
+                        prefix = lines[-1]
                 else:
                     prefix = None
 
