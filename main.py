@@ -17,8 +17,8 @@ if __name__ == '__main__':
     discord = DiscordWrapper()
 
     # Setup whisper model
-    #translator = FasterWhisperTranslator()
-    translator = WhisperCppTranslator()
+    translator = FasterWhisperTranslator()
+    # translator = WhisperCppTranslator()
 
     try:
         current_translation_m3u8 = ""
@@ -71,7 +71,11 @@ if __name__ == '__main__':
                 # Delete old files
                 i = 0
                 while i < len(files) - 2:
-                    os.remove(files[i])
+                    try:
+                        os.remove(files[i])
+                    except PermissionError as e:
+                        print("Caught PermissionError but continuing - Hopefully it's temporary")
+                        print(traceback.format_exc())
                     i += 1
 
                 # Translate current file

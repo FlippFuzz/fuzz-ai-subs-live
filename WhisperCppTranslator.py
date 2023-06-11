@@ -15,6 +15,7 @@ class WhisperCppTranslator(Translator):
 
     def __init__(self):
         print("Setting Up WhisperCpp")
+        #self.model = Model(self.MODEL_SIZE, audio_ctx=750)
         self.model = Model(self.MODEL_SIZE)
 
     def translate(self, audio_file: str) -> str:
