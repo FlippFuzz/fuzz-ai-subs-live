@@ -2,11 +2,13 @@ import asyncio
 import threading
 
 import yt_dlp
-from discord.ext.commands import Bot
+from discord.ext.commands import Bot, Context
 
 import credentials
 from asyncio import run_coroutine_threadsafe
-from discord import TextChannel, Intents, Client
+from discord import TextChannel, Intents
+
+from Settings import Settings
 
 
 # https://discordpy.readthedocs.io/en/stable/ext/commands/commands.html
@@ -14,25 +16,82 @@ from discord import TextChannel, Intents, Client
 class DiscordWrapper:
     ALLOWED_CHANNEL_NAMES = {"ai-sub"}
     channels: list[TextChannel] = []
-    video_m3u8 = ""
 
-    def __init__(self):
+    def __init__(self, settings: Settings):
         intents = Intents.default()
         intents.message_content = True
         self.bot = Bot(command_prefix="!", intents=intents)
+        self.settings = settings
 
-        @self.bot.command()
-        async def translate(ctx, url):
+        @self.bot.hybrid_command()
+        async def translate(ctx: Context, url: str):
+            """
+            Select a video to translate
+            
+            Parameters
+            ----------
+            url: str
+                URL to translate.
+                Example: https://youtu.be/r-g0L9avCaE
+            ctx: Context
+
+            Returns
+            -------
+            """
+
             message = f"ERROR: Cannot locate M3U8 for {url}"
             with yt_dlp.YoutubeDL() as ydl:
                 info = ydl.extract_info(url, download=False)
                 if "formats" in info and len(info["formats"]) > 0:
-                    self.video_m3u8 = info["formats"][0]['url']
-                    title = info['title']
-                    message = f"Command accepted. Will take around 30-60s before first TL is shown.\n"
-                    message += f"Title: {title}\nM3U8: {self.video_m3u8}"
+                    self.settings.video_m3u8 = info["formats"][0]['url']
+                    self.settings.title = info['title']
+                    self.settings.channel = info['channel']
+                    message = f"Command accepted.\n" \
+                              f"Settings: {self.settings}"
+                    settings.must_restart = True
 
             await ctx.send(message)
+
+        @self.bot.hybrid_group(name="settings")
+        async def settings_group(ctx: Context):
+            if ctx.invoked_subcommand is None:
+                await ctx.send(f"{ctx.invoked_subcommand} is an invalid subcommand.")
+
+        @settings_group.command()
+        async def vad(ctx: Context, enabled: bool):
+            """
+            Enable or disable Voice Activity Detection(VAD) for translation
+
+            Parameters
+            ----------
+            enabled:
+                yes or no
+            ctx: Context
+
+            Returns
+            -------
+            """
+            self.settings.vad_enabled = enabled
+            await ctx.send(f"Updated Settings:\n{self.settings}.")
+
+        @settings_group.command()
+        async def buffer_time(ctx: Context, buffer_time: int):
+            """
+            Amount of the video to buffer before translating.
+            This will restart the translation, causing an extra delay of buffer_time
+
+            Parameters
+            ----------
+            buffer_time:
+                Integer. Example: 10
+            ctx: Context
+
+            Returns
+            -------
+            """
+            self.settings.segment_time_seconds = buffer_time
+            settings.must_restart = True
+            await ctx.send(f"Updated Settings:\n{self.settings}.")
 
         @self.bot.event
         async def on_ready():
