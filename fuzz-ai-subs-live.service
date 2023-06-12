@@ -5,6 +5,7 @@ After=network-online.target
 
 [Service]
 WorkingDirectory=/opt/fuzz-ai-subs-live
+ExecStartPre=/bin/chmod +x /opt/fuzz-ai-subs-live/start.sh
 ExecStart=/opt/fuzz-ai-subs-live/start.sh
 Restart=always
 

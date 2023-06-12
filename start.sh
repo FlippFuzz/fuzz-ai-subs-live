@@ -3,7 +3,6 @@
 cd /opt/fuzz-ai-subs-live
 git fetch --all
 git reset --hard origin/main
-chmod +x start.sh
 
 if test -f "venv/bin/activate"; then
   echo "venv already created"
