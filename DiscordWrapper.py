@@ -127,7 +127,7 @@ class DiscordWrapper:
                         self.channels.append(channel)
                         print(f"Will send messages to {channel.guild.name} - {channel}")
 
-                self.send_message("Bot has started and is waiting for commands")
+                self.send_message(f"Bot has started and is waiting for commands. Version: {self.settings.version}")
 
         self.loop = asyncio.get_event_loop()
         self.thread = threading.Thread(target=self.loop.run_forever)

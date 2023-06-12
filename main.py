@@ -103,8 +103,9 @@ if __name__ == '__main__':
     except KeyboardInterrupt as e:
         print("Caught KeyboardInterrupt")
         print(traceback.format_exc())
-        discord.terminate_discord_client()
     except Exception as e:
         print("Caught Exception")
         print(traceback.format_exc())
-        discord.terminate_discord_client()
+
+    discord.send_message("Bot is exiting")
+    discord.terminate_discord_client()
