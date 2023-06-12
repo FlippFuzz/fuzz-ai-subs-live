@@ -15,13 +15,14 @@ We need to buffer for 30s, then spend time translating the chunk.
 
 ### How to install
 ```commandline
+cd /opt
 git clone https://github.com/FlippFuzz/fuzz-ai-subs-live.git
 cd fuzz-ai-subs-live
-python3 -m venv venv
-. venv/bin/activate
-pip3 install -r requirements.txt
 # Popluate credentials.py
-python3 main.py
+cp fuzz-ai-subs-live.service /usr/lib/systemd/system/fuzz-ai-subs-live.service
+systemctl daemon-reload
+systemctl enable fuzz-ai-subs-live.service
+systemctl start fuzz-ai-subs-live.service
 ```
 
 Note: On Windows, you MIGHT (unsure) need to install gpp/cpp to build the binary for pywhispercpp.

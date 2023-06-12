@@ -1,5 +1,7 @@
 import json
 
+import git
+
 
 class Settings:
     video_m3u8: str = ""
@@ -7,6 +9,8 @@ class Settings:
     title: str = ""
 
     must_restart = False
+    must_exit = False
+    version = "Unknown"
 
     buffer_time_seconds: int = 15
 
@@ -15,6 +19,11 @@ class Settings:
     vad_enabled: bool = True
     beam_size: int = 1
     temperature: float = 0
+
+    def __init__(self):
+        repo = git.Repo(search_parent_directories=True)
+        sha = repo.head.object.hexsha
+        self.version = repo.git.rev_parse(sha, short=7)
 
     def restore_defaults(self):
         # Is there a nicer way to do this without creating another tmp instance?
@@ -29,7 +38,8 @@ class Settings:
         self.temperature = tmp_settings.temperature
 
     def __str__(self) -> str:
-        return json.dumps({"segment_time_seconds": self.buffer_time_seconds,
+        return json.dumps({"version": self.version,
+                           "buffer_time_seconds": self.buffer_time_seconds,
                            "model_size": self.model_size,
                            "compute_type": self.compute_type,
                            "vad_enabled": self.vad_enabled,

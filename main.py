@@ -27,7 +27,7 @@ if __name__ == '__main__':
     try:
         current_translation_m3u8 = ""
 
-        while True:
+        while not settings.must_exit:
             if settings.video_m3u8 == "":
                 sleep(1)  # Just loop idly if there's no URL
                 continue

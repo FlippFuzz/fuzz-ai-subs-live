@@ -1,0 +1,12 @@
+[Unit]
+Description=Fuzz AI Subs Machine TL Discord Bot
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+WorkingDirectory=/opt/fuzz-ai-subs-live
+ExecStart=/opt/fuzz-ai-subs-live/start.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

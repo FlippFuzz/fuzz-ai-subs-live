@@ -6,7 +6,7 @@ from discord.ext.commands import Bot, Context
 
 import credentials
 from asyncio import run_coroutine_threadsafe
-from discord import TextChannel, Intents
+from discord import TextChannel, Intents, Interaction
 
 from Settings import Settings
 
@@ -14,7 +14,7 @@ from Settings import Settings
 # https://discordpy.readthedocs.io/en/stable/ext/commands/commands.html
 # https://discord.com/api/oauth2/authorize?client_id=1116722298934796418&permissions=3072&scope=bot
 class DiscordWrapper:
-    ALLOWED_CHANNEL_NAMES = {"ai-sub"}
+    channel_name_must_contain = "NOT+SET+YET"
     channels: list[TextChannel] = []
 
     def __init__(self, settings: Settings):
@@ -22,6 +22,25 @@ class DiscordWrapper:
         intents.message_content = True
         self.bot = Bot(command_prefix="!", intents=intents)
         self.settings = settings
+
+        @self.bot.check
+        async def is_correct_channel(interaction: Interaction) -> bool:
+            return self.channel_name_must_contain in interaction.channel.name
+
+        @self.bot.hybrid_command()
+        async def restart(ctx: Context):
+            """
+            Restart and update self
+
+            Parameters
+            ----------
+            ctx
+
+            Returns
+            -------
+            """
+            self.settings.must_restart = True
+            self.settings.must_exit = True
 
         @self.bot.hybrid_command()
         async def translate(ctx: Context, url: str):
@@ -75,30 +94,36 @@ class DiscordWrapper:
             await ctx.send(f"Updated Settings:\n{self.settings}.")
 
         @settings_group.command()
-        async def buffer_time(ctx: Context, buffer_time: int):
+        async def buffer_time(ctx: Context, time: int):
             """
             Amount of the video to buffer before translating.
             This will restart the translation, causing an extra delay of buffer_time
 
             Parameters
             ----------
-            buffer_time:
-                Integer. Example: 10
+            time:
+                Integer >= 1. Example: 10
             ctx: Context
 
             Returns
             -------
             """
-            self.settings.buffer_time_seconds = buffer_time
-            settings.must_restart = True
-            await ctx.send(f"Updated Settings:\n{self.settings}.")
+            if time >= 1:
+                self.settings.buffer_time_seconds = time
+                settings.must_restart = True
+                await ctx.send(f"Updated Settings:\n{self.settings}.")
+            else:
+                await ctx.send(f"\"{time}\" is invalid. Needs to be >= 1.")
 
         @self.bot.event
         async def on_ready():
-            print("Discord bot logged in as: %s, %s" % (self.bot.user.name, self.bot.user.id))
+            print(f"Discord bot logged in as: {self.bot.user.name}, {self.bot.user.id}")
+            self.channel_name_must_contain = self.bot.user.name.rsplit("-")[-1]
+            print(f"Channel Name Must Contain: {self.channel_name_must_contain}")
+
             for guild in self.bot.guilds:
                 for channel in guild.text_channels:
-                    if channel.name in self.ALLOWED_CHANNEL_NAMES:
+                    if self.channel_name_must_contain in channel.name:
                         self.channels.append(channel)
                         print(f"Will send messages to {channel.guild.name} - {channel}")
 
