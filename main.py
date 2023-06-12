@@ -51,13 +51,13 @@ if __name__ == '__main__':
                                                "-y", "-re",
                                                "-probesize", "32",
                                                "-i", current_translation_m3u8,
-                                               "-f", "segment", "-segment_time", f"{settings.segment_time_seconds}",
+                                               "-f", "segment", "-segment_time", f"{settings.buffer_time_seconds}",
                                                "-c:a", "pcm_s16le", "-ar", "16000", "-ac", "1",
                                                os.path.join(AUDIO_DIR, "%06d.wav")])
 
             print("Waiting for first segment")
-            discord.send_message(f"Buffering. Please wait for at least {2*settings.segment_time_seconds}s")
-            sleep(settings.segment_time_seconds)
+            discord.send_message(f"Buffering. Please wait for at least {2*settings.buffer_time_seconds}s")
+            sleep(settings.buffer_time_seconds)
 
             prev_file = ""
             # This condition check handles users changing the translation URL
@@ -93,8 +93,8 @@ if __name__ == '__main__':
                     discord_message += line + "\n"
 
                 end_time = time()
-                discord.send_message(f"{settings.channel} {audio_file} - TL Delay: "
-                                     f"{round(settings.segment_time_seconds + end_time - start_time, 3)}\n"
+                discord.send_message(f"{settings.channel} - {os.path.splitext(os.path.basename(audio_file))[0]} "
+                                     f"- TL Delay: {round(settings.buffer_time_seconds + end_time - start_time, 3)}\n"
                                      f"{discord_message}")
 
             ffmpeg_process.terminate()

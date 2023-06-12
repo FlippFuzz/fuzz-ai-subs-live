@@ -8,7 +8,7 @@ class Settings:
 
     must_restart = False
 
-    segment_time_seconds: int = 10
+    buffer_time_seconds: int = 10
 
     model_size: str = "medium"  # Valid model sizes are: tiny, base, medium, large-v1, large-v2
     compute_type: str = "int8"
@@ -20,7 +20,7 @@ class Settings:
         # Is there a nicer way to do this without creating another tmp instance?
         tmp_settings = Settings()
 
-        self.segment_time_seconds = tmp_settings.segment_time_seconds
+        self.buffer_time_seconds = tmp_settings.buffer_time_seconds
 
         self.model_size = tmp_settings.model_size
         self.compute_type = tmp_settings.compute_type
@@ -29,7 +29,7 @@ class Settings:
         self.temperature = tmp_settings.temperature
 
     def __str__(self) -> str:
-        return json.dumps({"segment_time_seconds": self.segment_time_seconds,
+        return json.dumps({"segment_time_seconds": self.buffer_time_seconds,
                            "model_size": self.model_size,
                            "compute_type": self.compute_type,
                            "vad_enabled": self.vad_enabled,

@@ -89,7 +89,7 @@ class DiscordWrapper:
             Returns
             -------
             """
-            self.settings.segment_time_seconds = buffer_time
+            self.settings.buffer_time_seconds = buffer_time
             settings.must_restart = True
             await ctx.send(f"Updated Settings:\n{self.settings}.")
 
