@@ -8,7 +8,7 @@ class Settings:
 
     must_restart = False
 
-    buffer_time_seconds: int = 10
+    buffer_time_seconds: int = 15
 
     model_size: str = "medium"  # Valid model sizes are: tiny, base, medium, large-v1, large-v2
     compute_type: str = "int8"
