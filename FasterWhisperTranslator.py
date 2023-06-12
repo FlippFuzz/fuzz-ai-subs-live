@@ -18,7 +18,11 @@ class FasterWhisperTranslator(Translator):
     def translate(self, audio_file: str, prefix=None) -> list[str]:
         translation = []
 
-        segments, _ = self.model.transcribe(audio_file, language="ja", task="translate", prefix=prefix,
+        task = "translate"
+        if not self.settings.translate:
+            task = "transcribe"
+
+        segments, _ = self.model.transcribe(audio_file, language="ja", task=task, prefix=prefix,
                                             beam_size=self.settings.beam_size, temperature=self.settings.temperature,
                                             vad_filter=True, vad_parameters=dict(min_silence_duration_ms=2000))
 

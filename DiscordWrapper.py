@@ -94,6 +94,24 @@ class DiscordWrapper:
             await ctx.send(f"Updated Settings:\n{self.settings}.")
 
         @settings_group.command()
+        async def translate(ctx: Context, enabled: bool):
+            """
+            Enable or disable translation
+
+            Parameters
+            ----------
+            enabled:
+                yes or no
+            ctx: Context
+
+            Returns
+            -------
+            """
+            self.settings.translate = enabled
+            await ctx.send(f"Updated Settings:\n{self.settings}.")
+
+
+        @settings_group.command()
         async def buffer_time(ctx: Context, time: int):
             """
             Amount of the video to buffer before translating.

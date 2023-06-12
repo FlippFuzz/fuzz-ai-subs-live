@@ -17,6 +17,7 @@ class Settings:
     model_size: str = "medium"  # Valid model sizes are: tiny, base, medium, large-v1, large-v2
     compute_type: str = "int8"
     vad_enabled: bool = True
+    translate: bool = True
     beam_size: int = 1
     temperature: float = 0
 
@@ -43,6 +44,7 @@ class Settings:
                            "model_size": self.model_size,
                            "compute_type": self.compute_type,
                            "vad_enabled": self.vad_enabled,
+                           "translate": self.translate,
                            "beam_size": self.beam_size,
                            "temperature": self.temperature
                            }, indent=2)
