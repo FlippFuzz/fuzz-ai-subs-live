@@ -19,6 +19,7 @@ cd /opt
 git clone https://github.com/FlippFuzz/fuzz-ai-subs-live.git
 cd fuzz-ai-subs-live
 # Popluate credentials.py
+chmod +x start.sh
 cp fuzz-ai-subs-live.service /usr/lib/systemd/system/fuzz-ai-subs-live.service
 systemctl daemon-reload
 systemctl enable fuzz-ai-subs-live.service
