@@ -12,31 +12,30 @@ class Settings:
     must_exit = False
     version = "Unknown"
 
-    buffer_time_seconds: int = 15
+    buffer_time_seconds: int
 
-    model_size: str = "medium"  # Valid model sizes are: tiny, base, medium, large-v1, large-v2
-    compute_type: str = "int8"
-    vad_enabled: bool = True
-    translate: bool = True
-    beam_size: int = 1
-    temperature: float = 0
+    model_size: str
+    compute_type: str
+    vad_enabled: bool
+    translate: bool
+    beam_size: int
+    temperature: float
 
     def __init__(self):
         repo = git.Repo(search_parent_directories=True)
         sha = repo.head.object.hexsha
         self.version = repo.git.rev_parse(sha, short=7)
+        self.restore_defaults()
 
     def restore_defaults(self):
-        # Is there a nicer way to do this without creating another tmp instance?
-        tmp_settings = Settings()
+        self.buffer_time_seconds = 15
 
-        self.buffer_time_seconds = tmp_settings.buffer_time_seconds
-
-        self.model_size = tmp_settings.model_size
-        self.compute_type = tmp_settings.compute_type
-        self.vad_enabled = tmp_settings.vad_enabled
-        self.beam_size = tmp_settings.beam_size
-        self.temperature = tmp_settings.temperature
+        self.model_size = "medium"  # Valid model sizes are: tiny, base, medium, large-v1, large-v2
+        self.compute_type = "int8"
+        self.vad_enabled = True
+        self.translate = True
+        self.beam_size = 1
+        self.temperature = 0.0
 
     def __str__(self) -> str:
         return json.dumps({"version": self.version,
