@@ -15,14 +15,14 @@ class FasterWhisperTranslator(Translator):
         model_dir = download_model(self.settings.model_size)
         self.model = WhisperModel(model_dir, compute_type=self.settings.compute_type)
 
-    def translate(self, audio_file: str, prefix=None) -> list[str]:
+    def translate(self, audio_file: str, prompt=None) -> list[str]:
         translation = []
 
         task = "translate"
         if not self.settings.translate:
             task = "transcribe"
 
-        segments, _ = self.model.transcribe(audio_file, language="ja", task=task, prefix=prefix,
+        segments, _ = self.model.transcribe(audio_file, language="ja", task=task, initial_prompt=prompt,
                                             beam_size=self.settings.beam_size, temperature=self.settings.temperature,
                                             vad_filter=True, vad_parameters=dict(min_silence_duration_ms=2000))
 

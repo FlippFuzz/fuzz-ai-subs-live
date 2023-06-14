@@ -94,6 +94,25 @@ class DiscordWrapper:
             await ctx.send(f"Updated Settings:\n{self.settings}.")
 
         @settings_group.command()
+        async def prompt(ctx: Context, enabled: bool):
+            """
+            Enable or disable prompt for translation/transcription
+            Details about prompts can be found at:
+            https://platform.openai.com/docs/guides/speech-to-text/prompting
+
+            Parameters
+            ----------
+            enabled:
+                yes or no
+            ctx: Context
+
+            Returns
+            -------
+            """
+            self.settings.prompt_enabled = enabled
+            await ctx.send(f"Updated Settings:\n{self.settings}.")
+
+        @settings_group.command()
         async def translate(ctx: Context, enabled: bool):
             """
             Enable or disable translation
@@ -109,7 +128,6 @@ class DiscordWrapper:
             """
             self.settings.translate = enabled
             await ctx.send(f"Updated Settings:\n{self.settings}.")
-
 
         @settings_group.command()
         async def buffer_time(ctx: Context, time: int):

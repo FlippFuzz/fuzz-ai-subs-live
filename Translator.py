@@ -3,9 +3,9 @@ class Translator:
     Base class that is used for translation
     Simply exposes a translaed function
     """
-    def translate(self, filename: str, prefix=None) -> list[str]:
+    def translate(self, filename: str, prompt=None) -> str:
         """
-        :param prefix: context information from the previous translation
+        :param prompt: context information from the previous translation
         :param filename: File to be translated
         :return: List of strings containing lines of the translations
         """

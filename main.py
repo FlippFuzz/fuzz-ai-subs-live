@@ -60,7 +60,9 @@ if __name__ == '__main__':
             sleep(settings.buffer_time_seconds)
 
             prev_file = ""
-            # This condition check handles users changing the translation URL
+            prompt = None
+            # This condition check handles the need to restart the translation.
+            # For example, someone could change the URL
             while settings.must_restart is False:
                 # Look for 2nd latest file - The latest file is still in progress.
                 files = glob.glob(os.path.join(AUDIO_DIR, "*.wav"))
@@ -91,6 +93,14 @@ if __name__ == '__main__':
                 discord_message = ""
                 for line in lines:
                     discord_message += line + "\n"
+
+                # Generate a prompt to store context for the next loop
+                if settings.prompt_enabled and len(lines) > 0:
+                    prompt = ""
+                    for line in lines:
+                        prompt += " " + line
+                else:
+                    prompt = None
 
                 end_time = time()
                 discord.send_message(f"{settings.channel} - {os.path.splitext(os.path.basename(audio_file))[0]} "
