@@ -1,9 +1,12 @@
+import TranslatedSegment
+
+
 class Translator:
     """
     Base class that is used for translation
     Simply exposes a translaed function
     """
-    def translate(self, filename: str, prompt=None) -> str:
+    def translate(self, filename: str, prompt=None) -> list[TranslatedSegment]:
         """
         :param prompt: context information from the previous translation
         :param filename: File to be translated

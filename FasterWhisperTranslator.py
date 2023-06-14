@@ -2,6 +2,7 @@ from faster_whisper import download_model, WhisperModel
 
 from Settings import Settings
 from Translator import Translator
+from TranslatedSegment import TranslatedSegment
 
 
 class FasterWhisperTranslator(Translator):
@@ -15,7 +16,7 @@ class FasterWhisperTranslator(Translator):
         model_dir = download_model(self.settings.model_size)
         self.model = WhisperModel(model_dir, compute_type=self.settings.compute_type)
 
-    def translate(self, audio_file: str, prompt=None) -> list[str]:
+    def translate(self, audio_file: str, prompt=None) -> list[TranslatedSegment]:
         translation = []
 
         task = "translate"
@@ -27,8 +28,11 @@ class FasterWhisperTranslator(Translator):
                                             vad_filter=True, vad_parameters=dict(min_silence_duration_ms=2000))
 
         for segment in segments:
-            text = segment.text.strip()
-            print(text)
-            translation.append(text)
+            t_segment = TranslatedSegment()
+            t_segment.text = segment.text.strip()
+            t_segment.start = segment.start
+            t_segment.end = segment.end
+            print(f"[{t_segment.start} -> {t_segment.end}] {t_segment.text}")
+            translation.append(t_segment)
 
         return translation

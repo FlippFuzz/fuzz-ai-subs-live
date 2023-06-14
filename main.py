@@ -88,17 +88,18 @@ if __name__ == '__main__':
 
                 # Translate current file
                 start_time = time()
-                lines = translator.translate(audio_file)
+                segments = translator.translate(audio_file)
 
                 discord_message = ""
-                for line in lines:
-                    discord_message += line + "\n"
+                audio_file_time = os.path.getctime(audio_file)
+                for segment in segments:
+                    discord_message += f"<t:{int(audio_file_time + segment.start)}:T> {segment.text}\n"
 
                 # Generate a prompt to store context for the next loop
-                if settings.prompt_enabled and len(lines) > 0:
+                if settings.prompt_enabled and len(segments) > 0:
                     prompt = ""
-                    for line in lines:
-                        prompt += " " + line
+                    for segment in segments:
+                        prompt += " " + segment.text
                 else:
                     prompt = None
 
