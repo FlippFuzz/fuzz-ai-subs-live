@@ -37,7 +37,7 @@ class FasterWhisperTranslator(Translator):
                 prompt = self.model.hf_tokenizer.decode(self.prompt_deque)
         else:
             self.prompt_deque.clear()
-        print(f"Prompt: {prompt}")
+        print(f"Prompt: {prompt}", flush=True)
 
         # Translate
         segments, _ = self.model.transcribe(audio_file, language="ja", task=task, initial_prompt=prompt,
