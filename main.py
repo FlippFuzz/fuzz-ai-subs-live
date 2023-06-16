@@ -2,6 +2,7 @@ import glob
 import os
 import subprocess
 import traceback
+from collections import deque
 from time import sleep, time
 from DiscordWrapper import DiscordWrapper
 from FasterWhisperTranslator import FasterWhisperTranslator
@@ -56,11 +57,17 @@ if __name__ == '__main__':
                                                os.path.join(AUDIO_DIR, "%06d.wav")])
 
             print("Waiting for first segment")
-            discord.send_message(f"Buffering. Please wait for at least {2*settings.buffer_time_seconds}s")
-            sleep(settings.buffer_time_seconds)
+            discord.send_message(f"Buffering. Please wait for at least {2 * settings.buffer_time_seconds}s")
+            for i in range(0, settings.buffer_time_seconds):
+                sleep(1)
+                if not ffmpeg_process.poll() is None:
+                    print("Warning: ffmpeg has exited!")
+                    print(f"RC: {ffmpeg_process.returncode}")
+                    print(f"stdout: {ffmpeg_process.stdout}")
+                    print(f"stderr: {ffmpeg_process.stderr}")
+                    print(f"args  : {ffmpeg_process.args}")
 
             prev_file = ""
-            prompt = None
             # This condition check handles the need to restart the translation.
             # For example, someone could change the URL
             while settings.must_restart is False:
@@ -94,14 +101,6 @@ if __name__ == '__main__':
                 audio_file_time = os.path.getctime(audio_file)
                 for segment in segments:
                     discord_message += f"<t:{int(audio_file_time + segment.start)}:T> {segment.text}\n"
-
-                # Generate a prompt to store context for the next loop
-                if settings.prompt_enabled and len(segments) > 0:
-                    prompt = ""
-                    for segment in segments:
-                        prompt += " " + segment.text
-                else:
-                    prompt = None
 
                 end_time = time()
                 discord.send_message(f"{settings.channel} - {os.path.splitext(os.path.basename(audio_file))[0]} "

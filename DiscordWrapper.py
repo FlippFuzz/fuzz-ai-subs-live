@@ -66,6 +66,7 @@ class DiscordWrapper:
                     self.settings.title = info['title']
                     self.settings.channel = info['channel']
                     message = f"Command accepted.\n" \
+                              f"Translating: {self.settings.title}\n" \
                               f"Settings: {self.settings}"
                     settings.must_restart = True
 
