@@ -20,7 +20,7 @@ class Settings:
     prompt_enabled: True
     translate: bool
     beam_size: int
-    temperature: float
+    temperature: list[float]
 
     def __init__(self):
         repo = git.Repo(search_parent_directories=True)
@@ -37,7 +37,14 @@ class Settings:
         self.prompt_enabled = True
         self.translate = True
         self.beam_size = 1
-        self.temperature = 0.0
+        self.temperature = [
+            0.0,
+            0.2,
+            0.4,
+            0.6,
+            0.8,
+            1.0,
+        ]
 
     def __str__(self) -> str:
         return json.dumps({"version": self.version,

@@ -89,4 +89,7 @@ class FasterWhisperTranslator(Translator):
             if not hallucination and self.settings.prompt_enabled:
                 self.prompt_deque.extend(segment.tokens)
 
+            if hallucination or t_segment.temperature > 0.5:
+                self.prompt_deque.clear()  # Clear the prompt if the output is strange
+
         return translation
