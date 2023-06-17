@@ -47,10 +47,12 @@ if __name__ == '__main__':
                 ffmpeg_location = "ffmpeg"
 
             # Start downloading audio files
+            # If -probesize is too small, ffmpeg might fail to launch due to
+            # "Stream #1: not enough frames to estimate rate; consider increasing probesize"
             ffmpeg_process = subprocess.Popen([ffmpeg_location,
                                                "-loglevel", "quiet",
                                                "-y", "-re",
-                                               "-probesize", "32",
+                                               "-probesize", "5120",
                                                "-i", current_translation_m3u8,
                                                "-f", "segment", "-segment_time", f"{settings.buffer_time_seconds}",
                                                "-c:a", "pcm_s16le", "-ar", "16000", "-ac", "1",
@@ -66,6 +68,7 @@ if __name__ == '__main__':
                     print(f"stdout: {ffmpeg_process.stdout}")
                     print(f"stderr: {ffmpeg_process.stderr}")
                     print(f"args  : {ffmpeg_process.args}")
+                    settings.must_restart = True
 
             prev_file = ""
             # This condition check handles the need to restart the translation.
