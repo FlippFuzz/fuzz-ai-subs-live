@@ -79,6 +79,7 @@ class FasterWhisperTranslator(Translator):
             t_segment.text = text
             t_segment.start = segment.start
             t_segment.end = segment.end
+            t_segment.temperature = segment.temperature
             translation.append(t_segment)
 
             # Update the prompt:

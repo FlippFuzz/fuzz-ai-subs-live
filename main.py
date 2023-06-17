@@ -100,7 +100,8 @@ if __name__ == '__main__':
                 discord_message = ""
                 audio_file_time = os.path.getctime(audio_file)
                 for segment in segments:
-                    discord_message += f"<t:{int(audio_file_time + segment.start)}:T> {segment.text}\n"
+                    discord_message += f"<t:{int(audio_file_time + segment.start)}:T> " \
+                                       f"{round(segment.temperature, 2)} {segment.text}\n"
 
                 end_time = time()
                 discord.send_message(f"{settings.channel} - {os.path.splitext(os.path.basename(audio_file))[0]} "

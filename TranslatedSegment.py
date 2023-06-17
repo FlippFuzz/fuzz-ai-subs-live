@@ -7,3 +7,4 @@ class TranslatedSegment:
     start: float
     end: float
     text: str
+    temperature: float
