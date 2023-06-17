@@ -8,3 +8,6 @@ class TranslatedSegment:
     end: float
     text: str
     temperature: float
+    avg_logprob: float
+    compression_ratio: float
+    no_speech_prob: float

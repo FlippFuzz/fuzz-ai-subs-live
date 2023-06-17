@@ -80,6 +80,9 @@ class FasterWhisperTranslator(Translator):
             t_segment.start = segment.start
             t_segment.end = segment.end
             t_segment.temperature = segment.temperature
+            t_segment.avg_logprob = segment.avg_logprob
+            t_segment.compression_ratio = segment.compression_ratio
+            t_segment.no_speech_prob = segment.no_speech_prob
             translation.append(t_segment)
 
             # Update the prompt:
